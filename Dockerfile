@@ -29,4 +29,4 @@ RUN set -x \
 
 ENTRYPOINT ["./entrypoint.sh"]
 
-CMD ["-b"]
+CMD ["top", "-b"]
