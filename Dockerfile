@@ -3,22 +3,22 @@ FROM nginx
 ARG SSH_USR=root
 ARG SSH_PWD=1234
 
-# http
-EXPOSE 80
-
-# ssh
-EXPOSE 22
+# http, ssh
+EXPOSE 80 22
 
 WORKDIR /usr/app
 
-COPY nginx.conf nginx.conf
-COPY --chmod=700 entrypoint.sh entrypoint.sh
+# By using --link, COPY doesn't depend on previous docker image layer
+COPY --link --chmod=700 nginx.conf entrypoint.sh ./ 
 
+# openssh-server requires `apt update`, otherwise the build may be
+# much faster without it
 RUN set -x\
     && apt update \
     && apt install --no-install-recommends --no-install-suggests -y \
         openssh-server 
 
+# Set up ssh server, daemon
 RUN set -x \
     && echo "$SSH_USR:$SSH_PWD" >> ~/passwdfile  \
     && chpasswd -c SHA512 < ~/passwdfile  \
