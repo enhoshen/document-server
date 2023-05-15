@@ -2,11 +2,12 @@ FROM nginx
 
 ARG SSH_USR=root
 ARG SSH_PWD=1234
+ARG BASE=/usr/app
 
 # http, ssh
 EXPOSE 80 22
 
-WORKDIR /usr/app
+WORKDIR $BASE
 
 # By using --link, COPY doesn't depend on previous docker image layer
 COPY --link --chmod=700 nginx.conf entrypoint.sh ./ 
@@ -25,7 +26,8 @@ RUN set -x \
     && rm ~/passwdfile  \
     && sed -i "s/#Port.*/Port 22/" /etc/ssh/sshd_config  \
     && sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/" /etc/ssh/sshd_config  \
-    && sed -i "s/#PasswordAuthentication.*/PasswordAuthentication yes/" /etc/ssh/sshd_config
+    && sed -i "s/#PasswordAuthentication.*/PasswordAuthentication yes/" /etc/ssh/sshd_config \
+    && mkdir -p $BASE/log 
 
 ENTRYPOINT ["./entrypoint.sh"]
 
