@@ -7,6 +7,7 @@ export const env = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
+    DOC_BASE: z.string(),
     DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(["development", "test", "production"]),
     NEXTAUTH_SECRET:
@@ -21,8 +22,8 @@ export const env = createEnv({
       process.env.VERCEL ? z.string().min(1) : z.string().url(),
     ),
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
-    GOOGLE_ID: z.string(),
-    GOOGLE_SECRET: z.string(),
+    //GOOGLE_ID: z.string(),
+    //GOOGLE_SECRET: z.string(),
   },
 
   /**
@@ -39,6 +40,7 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    DOC_BASE: process.env.DOC_BASE,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,

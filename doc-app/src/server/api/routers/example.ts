@@ -4,6 +4,7 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
+import { findDoc } from "~/server/doc-finder";
 
 export const exampleRouter = createTRPCRouter({
   hello: publicProcedure
@@ -21,4 +22,13 @@ export const exampleRouter = createTRPCRouter({
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
+
+  getDocs: publicProcedure
+    .query( () => {
+      let paths: string [] = findDoc()
+      console.log(`tRPC: ${paths}`);
+      return {
+        paths : paths,
+      }
+    }),
 });
