@@ -9,7 +9,7 @@ import { api, RouterOutputs } from "~/utils/api";
 type DocFinderType = RouterOutputs["doc"]['getDocs']['projects'][number];
 
 const Home: NextPage = () => {
-  const hello = api.doc.hello.useQuery({ text: "from tRPC" });
+  //const hello = api.doc.hello.useQuery({ text: "from tRPC" });
   const title = "Document System";
   const docs = api.doc.getDocs.useQuery();
 
@@ -36,12 +36,14 @@ const Home: NextPage = () => {
                 <div className="text-lg">
                 </div>
               </Link>
-            ) : "Loading links"}
+            ) : "Loading document projects"}
           </div>
           <div className="flex flex-col items-center gap-2">
+            {/*
             <p className="text-2xl text-white">
               {hello.data ? hello.data.greeting : "Loading tRPC query..."}
             </p>
+            */}
             <AuthShowcase />
           </div>
         </div>

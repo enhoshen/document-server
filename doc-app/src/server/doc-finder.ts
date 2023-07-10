@@ -7,7 +7,7 @@ export type DocProject = {
 }
 
 export const findDoc = () => {
-  const base: string = env.DOC_BASE;
+  const base: string = "./public";
   let projects: string [] = fs.readdirSync(base);
   let suffix: string = "html/index.html";
   projects = projects.filter((proj) => {
@@ -22,7 +22,7 @@ export const findDoc = () => {
   let map: DocProject [] = projects.map( (proj) => {
     return {
       name: `${proj}`,
-      href: `${base}/${proj}/${suffix}`,
+      href: `${proj}/${suffix}`,
     }
   });
   return map;
