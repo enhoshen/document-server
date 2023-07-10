@@ -2,8 +2,11 @@ import { type NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
-import { api } from "~/utils/api";
-import { DocProject } from "~/server/doc-finder";
+import { api, RouterOutputs } from "~/utils/api";
+
+// Infer the type from of getDocs api: DocProject[], access the element type
+// with [number], ref:(https://github.com/Microsoft/TypeScript/wiki/What's-new-in-TypeScript#keyof-and-lookup-types)
+type DocFinderType = RouterOutputs["doc"]['getDocs']['projects'][number];
 
 const Home: NextPage = () => {
   const hello = api.doc.hello.useQuery({ text: "from tRPC" });
@@ -23,7 +26,7 @@ const Home: NextPage = () => {
             {title}
           </h1>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:gap-8">
-            {docs.data? docs.data.projects.map((item: DocProject) =>
+            {docs.data? docs.data.projects.map((item: DocFinderType) =>
               <Link
                 className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
                 href={item.href}
