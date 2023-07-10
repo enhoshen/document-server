@@ -1,8 +1,30 @@
 import { env } from "~/env.mjs";
 import fs from "fs";
 
+export type DocProject = {
+  name: string;
+  href: string;
+}
+
 export const findDoc = () => {
   const base: string = env.DOC_BASE;
-  let paths: string [] = fs.readdirSync(base);
-  return paths;
+  let projects: string [] = fs.readdirSync(base);
+  let suffix: string = "html/index.html";
+  projects = projects.filter((proj) => {
+    console.log(`${proj}`);
+    try {
+      return fs.statSync(`${base}/${proj}/${suffix}`).isFile();
+    } catch(err) {
+      console.log(`${err}`);
+      return false;
+    }
+  })
+  let map: DocProject [] = projects.map( (proj) => {
+    return {
+      name: `${proj}`,
+      href: `${base}/${proj}/${suffix}`,
+    }
+  });
+  return map;
 }
+

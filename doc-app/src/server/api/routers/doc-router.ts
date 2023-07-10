@@ -4,9 +4,9 @@ import {
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
-import { findDoc } from "~/server/doc-finder";
+import { DocProject, findDoc } from "~/server/doc-finder";
 
-export const exampleRouter = createTRPCRouter({
+export const docRouter = createTRPCRouter({
   hello: publicProcedure
     .input(z.object({ text: z.string() }))
     .query(({ input }) => {
@@ -25,10 +25,10 @@ export const exampleRouter = createTRPCRouter({
 
   getDocs: publicProcedure
     .query( () => {
-      let paths: string [] = findDoc()
-      console.log(`tRPC: ${paths}`);
+      let projects: DocProject [] = findDoc()
+      console.log(`tRPC: ${JSON.stringify(projects)}`);
       return {
-        paths : paths,
+        projects: projects,
       }
     }),
 });

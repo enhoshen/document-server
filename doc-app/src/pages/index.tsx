@@ -3,12 +3,12 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 import { api } from "~/utils/api";
+import { DocProject } from "~/server/doc-finder";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const hello = api.doc.hello.useQuery({ text: "from tRPC" });
   const title = "Document System";
-  // const docs: string[] = ["A", "B", "C", "D"];
-  const docs = api.example.getDocs.useQuery();
+  const docs = api.doc.getDocs.useQuery();
 
   return (
     <>
@@ -23,13 +23,13 @@ const Home: NextPage = () => {
             {title}
           </h1>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:gap-8">
-            {docs.data ? docs.data.paths.map( (path: string) =>
+            {docs.data? docs.data.projects.map((item: DocProject) =>
               <Link
                 className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-                href="../doc1/html/index.html"
+                href={item.href}
                 target="_blank"
               >
-                <h3 className="text-2xl font-bold">{path} →</h3>
+                <h3 className="text-2xl font-bold">{item.name}→</h3>
                 <div className="text-lg">
                 </div>
               </Link>
@@ -52,7 +52,7 @@ export default Home;
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
 
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+  const { data: secretMessage } = api.doc.getSecretMessage.useQuery(
     undefined, // no input
     { enabled: sessionData?.user !== undefined },
   );
